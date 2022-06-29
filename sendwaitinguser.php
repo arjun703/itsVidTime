@@ -19,7 +19,7 @@ if(isset($_SESSION['loginId'])){
 	$lowerAgeLimit = $_COOKIE['lowerAgeLimit'];
 	$upperAgeLimit = $_COOKIE['upperAgeLimit'];
 
-	$filters = [];
+	$filters = array();
 
 	if($preferredGender!=''){
 		if($preferredGender=='Male'){
@@ -45,22 +45,26 @@ if(isset($_SESSION['loginId'])){
 	$filter = "";
 
 	for($i=0;$i<sizeof($filters);$i++){
-	
-		$filters[$i]= " AND ".$filters[$i];
-		$filter.=" ".$filters[$i]." ";
+		if(isset($filters[$i])){
+			$filters[$i]= " AND ".$filters[$i];
+			$filter.=" ".$filters[$i]." ";
+		}
 	}
 
-	$filter = trim($filter);
+	//echo 'size of filter: '.sizeof($filters);
 
-	$query  = "SELECT socketid FROM registered WHERE socketid NOT IN ('','".$itsSocketId."') ".$filter." LIMIT 1";
+	$filter = trim($filter);
+	//echo 'filter: '.$filter;
+
+	$query  = "SELECT socketid FROM registered WHERE socketid NOT IN ('','".$itsSocketId."') ".$filter."  UNION SELECT socketid FROM registered WHERE socketid NOT IN('','".$itsSocketId."') LIMIT 1";
 
 	//echo $query;
 
-	$result = mysqli_query($dbc,$query);
+	$result = mysqli_query($dbc,$query) or die(mysqli_error($dbc));
 
 	if(mysqli_num_rows($result)==0){
 		//echo 'inside 0';
-		$query = "SELECT socketid FROM waiting WHERE socketid NOT IN ('".$itsSocketId."') limit 1 ";
+		$query = "SELECT socketid FROM waiting  limit 1 ";
 
 		$result = mysqli_query($dbc,$query);
 
@@ -68,6 +72,11 @@ if(isset($_SESSION['loginId'])){
 			$row = mysqli_fetch_assoc($result);
 			$socketid = $row['socketid'];
 			$query = "DELETE FROM waiting WHERE socketid = '".$socketid."' ";
+			mysqli_query($dbc,$query);
+
+			$query = "UPDATE  registered SET socketid = ''   WHERE  socketid = '".$itsSocketId."'  ";
+			mysqli_query($dbc,$query);
+
 		}
 		else{
 			$socketid = '';
@@ -91,13 +100,12 @@ else{
 	if(mysqli_num_rows($result)==1){
 		$row= mysqli_fetch_assoc($result);
 		$socketid = $row['socketid'];
-		$query = "DELETE FROM waiting WHERE socketid = '".$socketid."' ";
+		$query = "DELETE FROM waiting WHERE socketid = '".$socketid."' OR socketid = '".$itsSocketId."' ";
 		mysqli_query($dbc,$query);
 	}
 	else{
 		$socketid = '';
 			$query = "INSERT INTO waiting VALUES ('".$itsSocketId."') ";
-
 			mysqli_query($dbc,$query);
 	}
 }
