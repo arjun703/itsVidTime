@@ -189,12 +189,8 @@ function handleICECandidateEvent(event) {
 
 function handleTrackEvent(event) {
 //  remoteVideo.srcObject = event.streams[0];
-
-
 	var [remoteStream] = event.streams;
     remoteVideo.srcObject = remoteStream;
-
-
 
 }
 

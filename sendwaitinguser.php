@@ -56,57 +56,46 @@ if(isset($_SESSION['loginId'])){
 	$filter = trim($filter);
 	//echo 'filter: '.$filter;
 
-	$query  = "SELECT socketid FROM registered WHERE socketid NOT IN ('','".$itsSocketId."') ".$filter."  UNION SELECT socketid FROM registered WHERE socketid NOT IN('','".$itsSocketId."') LIMIT 1";
+	$query  = "SELECT socketid FROM waiting,registered WHERE registered.loginid = waiting.loginid AND  socketid NOT IN (".$itsSocketId."') ".$filter."  UNION SELECT socketid FROM waiting WHERE socketid NOT IN(".$itsSocketId."') LIMIT 1";
 
 	//echo $query;
 
 	$result = mysqli_query($dbc,$query) or die(mysqli_error($dbc));
 
-	if(mysqli_num_rows($result)==0){
-		//echo 'inside 0';
-		$query = "SELECT socketid FROM waiting  limit 1 ";
-
-		$result = mysqli_query($dbc,$query);
-
-		if(mysqli_num_rows($result)==1){
-			$row = mysqli_fetch_assoc($result);
-			$socketid = $row['socketid'];
-			$query = "DELETE FROM waiting WHERE socketid = '".$socketid."' ";
-			mysqli_query($dbc,$query);
-
-			$query = "UPDATE  registered SET socketid = ''   WHERE  socketid = '".$itsSocketId."'  ";
-			mysqli_query($dbc,$query);
-
-		}
-		else{
+	if(mysqli_num_rows($result)==0){		
 			$socketid = '';
-			$query = "UPDATE registered SET socketid = '".$itsSocketId."' WHERE loginid = '".$_SESSION['loginId']. "'";
+			$query  = "INSERT INTO waiting (socketid,loginid) VALUES
+											('".$itsSocketId."','".$_SESSION['loginId']."')  ";
 			mysqli_query($dbc,$query);
-		}
 	}
 	else{
 		$row = mysqli_fetch_assoc($result);
 		$socketid = $row['socketid'];
-		$query = "UPDATE  registered SET socketid = ''   WHERE socketid= '".$socketid."' OR socketid = '".$itsSocketId."'  ";
+		$query = "INSERT INTO oncall VALUES ('".$itsSocketId."','".$socketid."') ";
+
 		mysqli_query($dbc,$query);
 	}
 }
 else{
 
-	$query = "SELECT socketid FROM waiting WHERE socketid NOT IN ('".$itsSocketId."') limit 1 ";
+	$query = "SELECT socketid FROM waiting WHERE socketid NOT IN ('".$itsSocketId."') AND loginid = '' limit 1 ";
 
 	$result = mysqli_query($dbc,$query);
 
 	if(mysqli_num_rows($result)==1){
 		$row= mysqli_fetch_assoc($result);
 		$socketid = $row['socketid'];
+		
 		$query = "DELETE FROM waiting WHERE socketid = '".$socketid."' OR socketid = '".$itsSocketId."' ";
 		mysqli_query($dbc,$query);
+
+		$query = "INSERT INTO oncall VALUES ('".$socketid."','".$itsSocketId."') ";
+		mysqli_query($dbc,$query) or die(mysqli_error($dbc));
 	}
 	else{
 		$socketid = '';
-			$query = "INSERT INTO waiting VALUES ('".$itsSocketId."') ";
-			mysqli_query($dbc,$query);
+		$query = "INSERT INTO waiting(socketid,loginid) VALUES ('".$itsSocketId."','') ";
+		mysqli_query($dbc,$query);
 	}
 }
 

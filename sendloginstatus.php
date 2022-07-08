@@ -4,7 +4,7 @@ require 'db.php';
 
 $dbc = mysqli_connect($host,$user,$pass,$db);
 
-$query = "SELECT COUNT(socketid) as total FROM  (SELECT socketid FROM registered WHERE socketid NOT IN ('') UNION SELECT socketid FROM waiting  )a  ";
+$query = "SELECT COUNT(socketid) as total FROM waiting ";
 
 $result = mysqli_query($dbc,$query);
 

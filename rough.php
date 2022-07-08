@@ -25,13 +25,49 @@ if($fp = file_get_contents($file)) {
 
 */
 
-$query= "SELECT *from registered";
+/*
+$query= "SELECT *from waiting,registered";
 
 $result = mysqli_query($dbc,$query) or die(mysqli_error($dbc));
 
 while($row = mysqli_fetch_assoc($result)){
-	print_r($row);//.'<br>';
+	print_r($row);
+	echo '<br>';
 }
+*/
+
+/*
+$query = "ALTER TABLE registered DROP COLUMN socketid";
+
+mysqli_query($dbc,$query) or die(mysqli_error($dbc));
+*/
+/*
+
+
+*/
+
+/*
+
+$query = "ALTER TABLE waiting
+ADD COLUMN loginid VARCHAR(20)";
+
+mysqli_query($dbc,$query) or die(mysqli_error($dbc));
+
+*/
+
+$query = "select * 
+  from information_schema.columns 
+ where table_schema = 'itsvidtime' 
+   and table_name = 'oncall'";
+
+$result = mysqli_query($dbc,$query);
+
+
+while($row=mysqli_fetch_assoc($result)){
+	print_r($row['COLUMN_NAME']);
+	echo '<br>';
+}
+
 
 
 

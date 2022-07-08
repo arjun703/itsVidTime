@@ -125,6 +125,10 @@ filloutAges();
 		processIncomingIceCandidates(message);
 	})
 
+	socket.on('otherPeerDisconnected',function(message){
+		closeVideoCall()
+	})
+
 </script>
 
 
