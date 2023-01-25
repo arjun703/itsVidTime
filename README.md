@@ -24,13 +24,15 @@ For video call or chat systems, some implementation of web sockets is useful. To
 
 - When server receives "startCall" event, the server checks whether there are any free users(the users who are not currently on call)
 
-- Suppose the server retrieves free user B, then the socket id of users A and B are removed from the pool of waiting list. So those users form another row in database table(to track currently busy users). Then the server emits another event "proceedToCall" to both users A and B
+- Suppose the server retrieves free user B, then the socket id of users A and B are removed from the pool of waiting list. So those users form another row in database table currently_on_call (to track busy users). Then the server emits another event "proceedToCall" to both users A and B
 
 - In case no any user is available, the server emits "userNotFound" event to the caller(user A in this case) by the help of socket id
 
 - When "proceedToCall" event is received by both users, WebRTC comes into play for the exchange of video data between them
 
-- when the call terminates or they are disconected to internet, the socket id of those users are first removed from the currently_on_call list, and they are inserted to waiting list
+- when the call terminates (one of the users clicks on "End Call" button, the socket id of those users are first removed from the currently_on_call list, and they are inserted to waiting list
+
+- if the users are disconnected from internet, they are removed from the waiting list table as well as currently_on_call (in case they were)
 
 # Main file holding logic for video call
 
