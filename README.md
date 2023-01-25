@@ -32,3 +32,14 @@ For video call or chat systems, some implementation of web sockets is useful. To
 
 - when the call terminates or they are disconected to internet, the socket id of those users are first removed from the currently_on_call list, and they are inserted to waiting list
 
+# Main file holding logic for video call
+
+https://github.com/arjun703/itsVidTime/blob/main/itsvidtime-php-part/videocall.js
+
+- uses vanilla javascript
+
+# Main file holding logic for real time notifications
+
+https://github.com/arjun703/itsVidTime/blob/main/itsvidtime-node-js-part/server.js
+
+- uses Node js
