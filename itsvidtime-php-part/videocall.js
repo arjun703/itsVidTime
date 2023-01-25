@@ -1,5 +1,4 @@
-function setStatusMessage(status,msg,persistent){
-
+function setStatusMessage(status,msg,persistence){
 
 	var previousMsgs = document.getElementsByClassName('statusMsgHolder');
 
@@ -35,7 +34,7 @@ function setStatusMessage(status,msg,persistent){
 	var newHeading2 = document.createElement('td');
 	newHeading2.innerText= msg+'...';
 
-	if(!persistent){
+	if(!persistence){
 		setTimeout(function(){
 			newDiv.classList.add('removeAnimation');
 			setTimeout(function(){
@@ -47,7 +46,7 @@ function setStatusMessage(status,msg,persistent){
 	newRow.appendChild(newHeading)
 	newRow.appendChild(newHeading2)
 
-	if(persistent){
+	if(persistence){
 		var newHeading3 = document.createElement('th');
 		var newIcon = document.createElement('i');
 		newHeading3.appendChild(newIcon);

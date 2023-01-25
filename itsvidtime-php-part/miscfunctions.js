@@ -184,7 +184,7 @@ function createSetPreferencesForm(){
    var preferencesHolder = document.createElement('div');
    preferencesHolder.className="preferencesHolder"
   
-   preferencesHolder.appendChild(createGenderSelector('Looking For ','genderHolder',preferredGender,['Male','Female']));
+   preferencesHolder.appendChild(createGenderSelector('Expected Gender ','genderHolder',preferredGender,['Male','Female']));
 
    if(preferredLocation==''){
       preferredLocation='Country';
