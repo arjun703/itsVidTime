@@ -12,9 +12,9 @@ For video call or chat systems, some implementation of web sockets is useful. To
 
 Before using WebRTC for actual real time video stream exchange, we need to pass signalling stage. In this stage, the caller and callee try gathering more details about each other such as network status(fast or slow internet connection, according to which quality of vidoe call is set), public IP address(i.e. IP address of Router the user's device is connected to, and not of the mobile/computer itself). Read WebRTC docs.
 
-For this signalling stage, we can use AJAX(or XMLHttpRequest) as well instead of socket.io, but you may have guessed, AJAX is resources hungry for RTC. Had we not implemented socket.io, we would have made an AJAX call each second or so.
+For this signalling stage, we can use AJAX(or XMLHttpRequest) as well instead of socket.io, but you may have guessed, AJAX is resources hungry for RTC. Had we not implemented socket.io, we would have made an AJAX call each second or so.  It is commonly referred to as polling the server(i.e client periodically calling the server to find if there are any new notifications)
 
-Actually, I had first tried using AJAX call to PHP endpoint. The video call was successful but the hosting service provider(InfinityFree) suspended my website very soon because the resource usage exceeded the limit for free account. I couldn't even test properly. 
+Actually, I had first tried using AJAX call to PHP endpoint. The video call was successful but the hosting service provider(InfinityFree) suspended my website very soon because the resource usage exceeded the limit for free account. I couldn't even test properly.  WebSockets provide a more efficient alternative to continually polling your application's server for data changes that should be reflected in your UI.
 
 I switched to Heroku after implementing socket.io in conjunction with NodeJS(insted of PHP). Heroku was sufficient for testing purposes.
 
