@@ -8,7 +8,7 @@ const io = new Server(
 		cors: {
 			// the request coming from xampp localhost is not blocked
 			//origin: "http://localhost"
-			origin: "https://itsvidtime.000webhostapp.com/			
+			origin: "https://itsvidtime.000webhostapp.com"			
 		}
 	}
 );
