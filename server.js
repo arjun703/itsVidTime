@@ -7,8 +7,8 @@ const io = new Server(
 		//cross orignin resource acces
 		cors: {
 			// the request coming from xampp localhost is not blocked
-			origin: "http://localhost"
-			//origin: "https://itsvidtime.herokuapp.com"			
+			//origin: "http://localhost"
+			origin: "http://itsvidtime.rf.gd/"			
 		}
 	}
 );
