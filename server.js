@@ -51,6 +51,7 @@ const mySocketId = new Promise((resolve, reject) => {
 			resolve(result[0].socketid);
 		}
 		else{
+			console.log(err);
 			resolve('');
 		}
 	})				
